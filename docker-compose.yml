@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  frontend:
+    container_name: seguimiento-pacientes-full-frontend
+    restart: always
+    build: ./frontend
+    ports: 
+      - "8000:8000"
+    networks:
+      - backend_network
+
+  backend:
+    container_name: seguimiento-pacientes-full-backend
+    restart: always
+    build: ./back
+    ports:
+      - "8081:8081"
+    networks:
+      - backend_network
+      
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    expose:
+      - "27017"
+    volumes:
+      - ./data:/data/seguimiento-citas
+    ports:
+      - "27017:27017"
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+      driver: bridge
